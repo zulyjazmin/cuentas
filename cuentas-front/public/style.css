@@ -1,0 +1,19 @@
+nav {
+    background-color: red;
+    
+}
+#navbarNav {
+    justify-content: flex-end;
+    padding: 5px 30px;
+}
+
+.navbar-brand {
+    color: white;
+}
+main{
+    padding: 20px 30px;
+}
+
+.navbar-nav .nav-link.active{
+    color: white;
+}
