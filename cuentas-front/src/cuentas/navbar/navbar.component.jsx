@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 const NavBar = ({ crearCuenta }) => (
     <nav className="navbar navbar-expand-lg ">
         <div className="container-fluid">

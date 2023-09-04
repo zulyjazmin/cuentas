@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 const TableRow = ({ x, borrarCuenta }) => (
     <tr>
         <th scope="row">{x.numero}</th>
