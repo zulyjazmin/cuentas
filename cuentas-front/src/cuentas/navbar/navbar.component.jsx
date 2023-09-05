@@ -1,5 +1,11 @@
-import React, { useContext } from 'react';
-const NavBar = ({ crearCuenta }) => (
+import { useContext } from "react";
+import { CuentasContext } from "../cuentas.context";
+
+const NavBar = () =>
+{ 
+    const ctx = useContext(CuentasContext);
+
+return (
     <nav className="navbar navbar-expand-lg ">
         <div className="container-fluid">
             <a className="navbar-brand" href="#">Catalogo de Cuentas</a>
@@ -10,7 +16,7 @@ const NavBar = ({ crearCuenta }) => (
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link active" aria-current="page" href="#" onClick={crearCuenta}>Nueva</a>
+                        <a className="nav-link active" aria-current="page" href="#" onClick={ctx.crearCuenta}>Nueva</a>
                     </li>
 
                 </ul>
@@ -18,4 +24,6 @@ const NavBar = ({ crearCuenta }) => (
         </div>
     </nav>
 );
+
+}
 export default NavBar;

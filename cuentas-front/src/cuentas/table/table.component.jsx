@@ -2,7 +2,7 @@ import { useContext } from "react";
 import TableRow from "./tablerow/tablerow.component";
 import { CuentasContext } from "../cuentas.context";
 
-const Table = ({ borrarCuenta }) => {
+const Table = () => {
 
   const ctx = useContext(CuentasContext);
 
@@ -26,7 +26,7 @@ const Table = ({ borrarCuenta }) => {
               a.numero < b.numero ? -1 : 1
             )
             .map(x => (
-              <TableRow borrarCuenta={borrarCuenta}
+              <TableRow 
                 x={x}
                 key={x.numero} />
 
