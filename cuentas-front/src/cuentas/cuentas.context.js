@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 
 export const CuentasContext = createContext({
-  obtenerCatalogoInicial() {},
+  async obtenerCatalogoInicial() {},
   crearCuenta() {},
   obtenerCatalogo() {},
   borrarCuenta() {},
@@ -11,32 +11,20 @@ export const CuentasProvider = ({ children }) => {
   const [catalogo, setCatalogo] = useState([]);
 
   const cuentasService = {
-    obtenerCatalogoInicial() {
-      return [
-        { numero: '010101', nombre: 'Disponibilidades', rubro: 'Activo', subrubro: 'Activo circulante', deposito: 'Banco Galicia', moneda: 'ARS' },
-        { numero: '010102', nombre: 'Cuentas a pagar', rubro: 'Activo', subrubro: 'Activo circulante', deposito: 'Banco Galicia', moneda: 'USD' },
-        { numero: '020101', nombre: 'Cuentas por pagar', rubro: 'Pasivo', subrubro: 'Activo circulante', deposito: 'Banco Patagonia', moneda: 'ARS' },
-        { numero: '020109', nombre: 'Cuentas de zulyyyyy', rubro: 'Pasivo', subrubro: 'Activo circulante', deposito: 'Banco Patagonia', moneda: 'ARS' },
-      ];
+   async obtenerCatalogoInicial() {
+    const res = await fetch('http://localhost:5000/cuenta/inicial');
+    const data = await res.json();
+    return data;
+ 
     },
 
-    crearCuenta() {
-      const numero = prompt('Ingrese el numero de la cuenta');
-      const nombre = prompt('Ingrese el nombre de la cuenta');
-      const rubro = prompt('Ingrese el rubro de la cuenta');
-      const subrubro = prompt('Ingrese el subrubro de la cuenta');
-      const deposito = prompt('Ingrese el deposito de la cuenta');
-      const moneda = prompt('Ingrese la moneda de la cuenta');
+    async crearCuenta() {
 
-      const nuevoCatalogo = [...catalogo, {
-        numero,
-        nombre,
-        rubro,
-        subrubro,
-        deposito,
-        moneda,
-      }];
-
+      const res = await fetch('http://localhost:5000/cuenta', {
+        method: 'POST'
+      });
+      const nuevoCatalogo = await res.json();
+  
       setCatalogo(nuevoCatalogo);
     },
 
@@ -44,15 +32,19 @@ export const CuentasProvider = ({ children }) => {
       return catalogo;
     },
 
-    borrarCuenta(numero) {
-      const nuevoCatalogo = catalogo.filter((x) => x.numero !== numero);
+    async borrarCuenta(numero) {
+      const res = await fetch('http://localhost:5000/cuenta/'+numero, {
+        method: 'DELETE'
+      });
+      const nuevoCatalogo = await res.json();
       setCatalogo(nuevoCatalogo);
     },
   };
 
   useEffect(() => {
     console.log("Inicializando catálogo");
-    setCatalogo(cuentasService.obtenerCatalogoInicial());
+    cuentasService.obtenerCatalogoInicial()
+      .then(catalogo => setCatalogo(catalogo))
   }, []);
 
   return <CuentasContext.Provider children={children} value={cuentasService} />;
