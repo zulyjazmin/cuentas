@@ -22,4 +22,4 @@ const cuentasController = {
     },
  }
 
- module.export = cuentasController;
+ module.exports = cuentasController;
