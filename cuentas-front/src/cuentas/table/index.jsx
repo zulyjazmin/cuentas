@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import TableRow from "./tablerow.component";
 import { CuentasContext } from "../cuentas.context";
 
-const Table = () => {
-
-  const ctx = useContext(CuentasContext);
+const Table = () =>
+{
+    const ctx = useContext(CuentasContext);
 
   return (
     <main>
@@ -21,7 +21,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {ctx.obtenerCatalogo()
+          {ctx.catalogo
             .sort((a, b) =>
               a.numero < b.numero ? -1 : 1
             )

@@ -1,51 +1,64 @@
 import { createContext, useEffect, useState } from "react";
 
 export const CuentasContext = createContext({
-  async obtenerCatalogoInicial() {},
-  crearCuenta() {},
-  obtenerCatalogo() {},
-  borrarCuenta() {},
+
+      crearCuenta() {},
+      obtenerCatalogo() {},
+      borrarCuenta() {},
 });
 
-export const CuentasProvider = ({ children }) => {
+export const CuentasProvider = ({ children }) =>
+ {
+
   const [catalogo, setCatalogo] = useState([]);
 
   const cuentasService = {
-   async obtenerCatalogoInicial() {
-    const res = await fetch('http://localhost:5000/cuenta/inicial');
-    const data = await res.json();
-    return data;
+
+      get catalogo() {
+        return catalogo;
+      },
+
+      async obtenerCatalogo() {
+            const res = await fetch('http://localhost:5000/cuenta');
+            const data = await res.json();
+
+            setCatalogo(data);
+
+            return data;
  
     },
 
-    async crearCuenta() {
+    async crearCuenta(cuenta) {
 
       const res = await fetch('http://localhost:5000/cuenta', {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cuenta)
       });
-      const nuevoCatalogo = await res.json();
-  
-      setCatalogo(nuevoCatalogo);
-    },
+       
+      const result = await res.json();      
+      await this.obtenerCatalogo();
 
-    obtenerCatalogo() {
-      return catalogo;
     },
 
     async borrarCuenta(numero) {
       const res = await fetch('http://localhost:5000/cuenta/'+numero, {
         method: 'DELETE'
       });
-      const nuevoCatalogo = await res.json();
-      setCatalogo(nuevoCatalogo);
+
+      await res.json();
+      await this.obtenerCatalogo();
     },
   };
 
-  useEffect(() => {
-    console.log("Inicializando catálogo");
-    cuentasService.obtenerCatalogoInicial()
-      .then(catalogo => setCatalogo(catalogo))
-  }, []);
+
+  useEffect(() =>
+  {
+     cuentasService.obtenerCatalogo()
+        .then(() => console.log('Catalogo cargado'));
+  });
 
   return <CuentasContext.Provider children={children} value={cuentasService} />;
-};
+}
