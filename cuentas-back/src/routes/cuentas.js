@@ -3,8 +3,8 @@ const cuentasController = require('../controllers/cuentas');
 
 const cuentasRouter = express.Router();
 
-cuentasRouter.get('/cuenta', cuentasController.obtenerCatalogo)
-cuentasRouter.post('/cuenta', cuentasController.crearCuenta)
-cuentasRouter.delete('/cuenta/:id', cuentasController.borrarCuenta)
+cuentasRouter.get('/cuenta', cuentasController.obtenerCatalogo)  // Nivel 2: Token
+cuentasRouter.post('/cuenta', cuentasController.crearCuenta)  // Nivel 2: Token
+cuentasRouter.delete('/cuenta/:id', cuentasController.borrarCuenta)  // Nivel 2: Token
 
 module.exports = cuentasRouter;
