@@ -1,4 +1,4 @@
-const usuariosModel = require("../models/usuarios");
+const usuariosModel = require("../models/usuarios.model");
 const { throwIfSomeEmpty, throwIfExists, insertInModel, formatAccount} = require("../utils/ops");
 
 

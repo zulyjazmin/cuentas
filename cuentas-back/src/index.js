@@ -1,41 +1,30 @@
+require('dotenv').config({
+   path: '.env.local'
+});
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const cuentasRouter = require('./routes/cuentas');
+const publicRoutes = require('./routes/public.routes');
+const protectedRoutes = require('./routes/protected.routes');
+const privateRoutes = require('./routes/private.routes');
 
-const fs = require('fs');
 
 const app = express();
 
-app.use((req, res, next) =>
-{   
-   // 1) Leer permiso Actual
-       let permisoActual = 0;
-       if (req.headers['x-access-token'] != undefined && tokenExisteEnBBDD()) // TODO
-          permisoActual = 2;
-       else if (req.headers['authorization'] != undefined && usuarioExisteEnBBDD()) // TODO
-          permisoActual = 1;  
-           
-       // 2) Leer permiso de la ruta
-         
-       const permisos = JSON.parse(fs.readFileSync('permissions.json'));
-       const permisoSolicitado = permisos.find(x => x.method == req.method && x.url == req.url);
+app.use(publicRoutes);
+app.use(protectedRoutes);
+app.use(privateRoutes)
 
-       // 3) Compararlos
-        if (permisoSolicitado == undefined || permisoSolicitado.minLevel <= permisoActual)
-           next()
-         else 
-              res.status(403).send();
-});
 
+//app.use(authMiddleWare);
 app.use(cors());
 app.use(express.json());
-
 app.use(cuentasRouter);
 
 mongoose
-.connect('mongodb+srv://zuly:sgzgjg156@liquishop.ukypr7d.mongodb.net/contabilidad?retryWrites=true&w=majority')
+.connect(process.env.MONGO_URL)
 .then(() =>
-   app.listen(5000, () =>
-   console.log('Servidor ejecutandose en http://localhost:5000')))
+   app.listen(process.env.Port, () =>
+   console.log('Servidor ejecutandose en http://localhost:'+process.env.PORT)))
 

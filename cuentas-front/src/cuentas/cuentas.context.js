@@ -19,7 +19,13 @@ export const CuentasProvider = ({ children }) =>
       },
 
       async obtenerCatalogo() {
-            const res = await fetch('http://localhost:5000/cuenta');
+            const res = await fetch('http://localhost:5000/cuenta', {
+                 headers: {
+                  'x-access-token': "1234"
+                 }
+            });
+
+
             const data = await res.json();
 
             setCatalogo(data);
