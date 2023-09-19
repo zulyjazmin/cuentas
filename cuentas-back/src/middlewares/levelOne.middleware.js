@@ -1,3 +1,5 @@
+const usuariosModel = require("../models/usuarios.model");
+
 const levelOneMiddleware = async (req, res, next) =>
 {
     const credenciales = req.headers['authorization'];
@@ -22,10 +24,10 @@ const levelOneMiddleware = async (req, res, next) =>
     {
         next()
     }
-    {
+    else
         res.status(403).send();
         return;
     }
-}
+
 
 module.exports = levelOneMiddleware;
